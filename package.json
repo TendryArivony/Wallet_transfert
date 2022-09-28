@@ -1,0 +1,47 @@
+{
+  "name": "reactjs",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "canvasjs": "^1.8.3",
+    "chart.js": "^3.7.0",
+    "react": "^17.0.2",
+    "react-chartjs-2": "^4.0.1",
+    "react-dom": "^17.0.2",
+    "react-paginate": "^8.1.0",
+    "react-router-dom": "^6.2.1",
+    "react-scripts": "4.0.3",
+    "recharts": "^2.1.8",
+    "web-vitals": "^1.1.2"
+  },
+  "scripts": {
+    "start": "set HTTPS=true&&set SSL_CRT_FILE=C:cert.crt&&set SSL_KEY_FILE=C:cert.key&&react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": { 
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-export-default-from": "^7.16.7"
+  }
+}
