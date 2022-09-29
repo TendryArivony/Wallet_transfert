@@ -9,7 +9,7 @@ const Tokens = () => {
         const [isPending, setIsPending] = useState(true);
         const [error, setError] = useState(null); 
         const token = JSON.parse(localStorage.getItem('tokens'));
-        const [url,setUrl] = useState("/tokens");
+        const [url,setUrl] = useState("/tokens?limit=10");
         
 
         useEffect(() => {
@@ -21,7 +21,7 @@ const Tokens = () => {
                         headers:{
                             'Authorization': `Bearer ${token}`,
                             'Content-type': 'application/json',
-                            'TREETRACKER-API-KEY' : 'u1duqPKX4qct4DLzjgy7CkPkeyv1w0PV',
+                            'TREETRACKER-API-KEY' : 'ybvrLbs5iCRRx9Jul5naIStisG3qjIXT',
                         }
                     }
                 )
@@ -33,7 +33,8 @@ const Tokens = () => {
                 })
                 .then(data => {
                     setIsPending(false);
-                    setToken(data);
+                    console.log(data);
+                    setToken(data.tokens);
                     setError(null);
                 })
                 .catch(err => {
