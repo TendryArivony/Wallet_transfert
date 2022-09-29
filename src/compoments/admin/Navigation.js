@@ -14,6 +14,7 @@ const Navigation = () => {
                     </a>
                     <a className="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
                 </div>
+<<<<<<< Updated upstream
                 <div className="navbar-content scroll-div">
                     <ul className="nav pcoded-inner-navbar">
                         <li className="nav-item pcoded-menu-caption">
@@ -37,6 +38,35 @@ const Navigation = () => {
                 </div>
             </div>
         </nav>
+=======
+                <span className="b-title">Bondy</span>
+            </a>
+            <a className="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
+        </div>
+        <div className="navbar-content scroll-div">
+            <ul className="nav pcoded-inner-navbar">
+                <li className="nav-item pcoded-menu-caption">
+                    <label>Navigation</label>
+                </li>
+                <li>
+                    <Link to="../tokens"><span className="pcoded-micon"><i className="feather icon-home"></i></span><span className="pcoded-mtext">Liste des tokens dans ce wallet</span></Link>
+                </li>
+                <li data-username="form elements advance componant validation masking wizard picker select" className="nav-item">
+                    <Link to="../wallets"><span className="pcoded-micon"><i className="feather icon-alert-octagon"></i></span><span className="pcoded-mtext">Liste de tous les wallet gérés</span></Link>
+                </li>
+              
+                <li data-username="form elements advance componant validation masking wizard picker select" className="nav-item">
+                    <Link to="#"><span className="pcoded-micon"><i className="feather icon-box"></i></span><span className="pcoded-mtext">Transférer des tokens entre les wallets</span></Link>
+                </li>
+                <li data-username="form elements advance componant validation masking wizard picker select" className="nav-item">
+                    <Link to="#"><span className="pcoded-micon"><i className="feather icon-users"></i></span><span className="pcoded-mtext">Voir les transferts</span></Link>
+                </li>
+               
+            </ul>
+        </div>
+    </div>
+    </nav>
+>>>>>>> Stashed changes
     );
 };
 
