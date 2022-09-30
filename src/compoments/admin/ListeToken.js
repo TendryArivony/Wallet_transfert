@@ -231,14 +231,19 @@ const Tokens = () => {
                                             <div class="modal-body">
                                         
                                             <div class="col-lg-6">
-                                                        <ul>
-                                                            <li><i class="bi bi-rounded-right"></i> <dt>Id:</dt><dd>{ detail.id} </dd></li>
-                                                            <li><i class="bi bi-rounded-right"></i> <dt>Capture_id:</dt><dd>{ detail.capture_id} </dd></li>
-                                                            <li><i class="bi bi-rounded-right"></i> <dt>Wallet_id:</dt><dd>{ detail.wallet_id} </dd></li>
-                                                            <li><i class="bi bi-rounded-right"></i> <dt>Cree le:</dt><dd>{ detail.created_at} </dd></li>
-                                                            <li><i class="bi bi-rounded-right"></i> <dt>Modifie le:</dt><dd>{ detail.updated_at} </dd></li>
+                                               {detail!==null &&
+                                                    <ul>
+                                                    <li><i class="bi bi-rounded-right"></i> <dt>Id:</dt><dd>{ detail.id} </dd></li>
+                                                    <li><i class="bi bi-rounded-right"></i> <dt>Capture_id:</dt><dd>{ detail.capture_id} </dd></li>
+                                                    <li><i class="bi bi-rounded-right"></i> <dt>Wallet_id:</dt><dd>{ detail.wallet_id} </dd></li>
+                                                    <li><i class="bi bi-rounded-right"></i> <dt>Cree le:</dt><dd>{ detail.created_at} </dd></li>
+                                                    <li><i class="bi bi-rounded-right"></i> <dt>Modifie le:</dt><dd>{ detail.updated_at} </dd></li>
+                                                
+                                                </ul>
+                                                }
+                                           
+                                            
                                                         
-                                                        </ul>
                                                         </div>
 
                                                     <div class="modal-footer">
