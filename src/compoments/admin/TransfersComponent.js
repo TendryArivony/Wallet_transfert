@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from "react-router-dom"
 import { useState, useEffect } from 'react';
 import baseURI from '../../utilitaire/baseURI';
@@ -9,6 +9,10 @@ const TransfersComponent = () => {
 
   const initialValue = { bundle: { bundle_size: "" }, sender_wallet: "", receiver_wallet: "" };
   const [formValues, setFormValues] = useState(initialValue);
+  const tokenTab = [];
+  const inputRef = useRef("");
+  const multipleTokenInitialValue = { tokens: [], sender_wallet: "", receiver_wallet: "" };
+  const [multipleFormValues, setMultipleFormValues] = useState(multipleTokenInitialValue);
 
   const handleChangeBundle = (e) => {
     const { value } = e.target;
@@ -25,9 +29,31 @@ const TransfersComponent = () => {
     formValues['receiver_wallet'] = value;
   }
 
-  const doTransfer = (e) => {
+  const doTransferSingle = (e) => {
     e.preventDefault();
     console.log(formValues);
+  }
+
+  const addToList = (e) => {
+    e.preventDefault();
+    tokenTab.push(inputRef.current.value);
+    inputRef.current.value = "";
+  }
+
+  const handleChangeMultipleSender = (e) => {
+    const { value } = e.target;
+    multipleFormValues["sender_wallet"] = value;
+  }
+
+  const handleChangeMultipleReceiver = (e) => {
+    const { value } = e.target;
+    multipleFormValues["receiver_wallet"] = value;
+  }
+
+  const doTransferMultiple = (e) => {
+    e.preventDefault();
+    multipleFormValues["tokens"] = tokenTab;
+    console.log(multipleFormValues);
   }
 
   return (
@@ -67,7 +93,7 @@ const TransfersComponent = () => {
                     </ul>
                     <div class="tab-content" id="myTabContent">
                       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <form class="form-inline" onSubmit={doTransfer}>
+                        <form class="form-inline" onSubmit={doTransferSingle}>
                           <div class="form-group mb-2">
                             <label for="staticEmail2" class="mr-2 sr-only">Sender Wallet</label>
                             <input type="text" class="form-control" id="staticEmail2" name="sender_wallet" onChange={handleChangeSender} placeholder="Sender" />
@@ -84,7 +110,37 @@ const TransfersComponent = () => {
                         </form>
                       </div>
                       <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-
+                        {/* <div id="newList">
+                          <p>{tokenTab.length}</p>
+                          <ul>
+                            {tokenTab.length !== 0 && <> {tokenTab.map((tokenUUID) =>
+                              <li>{tokenUUID}</li>
+                            )}</>}
+                          </ul>
+                        </div> */}
+                        <div class="input-group mb-3">
+                          <input type="text" class="form-control" ref={inputRef} value={inputRef.current.value} placeholder="Token UUID" name="uuid" aria-label="Token UUID" aria-describedby="basic-addon2" />
+                          <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" onClick={addToList}>Ajouter à la liste</button>
+                          </div>
+                        </div>
+                        <form onSubmit={doTransferMultiple}>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label for="exampleInputPassword1">Sender</label>
+                                <input type="text" class="form-control" id="exampleInputPassword1" name="sender" onChange={handleChangeMultipleSender} placeholder="Sender" />
+                              </div>
+                              <button type="submit" class="btn btn-primary">Transferer</button>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label for="receiverInput">Receiver</label>
+                                <input type="text" class="form-control" id="receiverInput" name="receiver" onChange={handleChangeMultipleReceiver} placeholder="Receiver" />
+                              </div>
+                            </div>
+                          </div>
+                        </form>
                       </div>
                     </div>
                   </div>
