@@ -12,6 +12,7 @@ import CustomRoutes from './compoments/customRoutes/CustomRoutes';
 import Tokens from './pages/admin/Tokens';
 import Wallet from './pages/admin/Wallet';
 import Transfers from './pages/admin/Transfers';
+import TrustRelashionship from './pages/admin/TrustRelashionship';
 
 
 
@@ -21,17 +22,12 @@ const App = () => {
         <BrowserRouter>
             <Routes>
                 <Route path="/home" exact element={<CustomRoutes compoment={Home} />} />
-                {/* <Route path="/regions" exact element={<Region />}/> */}
                 <Route path="/types" exact element={<Type />} />
                 <Route path="/tokens" exact element={<Tokens />} />
                 <Route path="/wallets" exact element={<Wallet />} />
                 <Route path="/" exact element={<Login />} />
                 <Route path="/transfers" exact element={<Transfers />} />
-                {/* <Route path="/responsables" exact element={<Responsable />}/>
-                <Route path="/affectation" exact element={<Affectation />}/>
-                <Route path="/signalement" exact element={<Signalement />}/>
-                <Route path="/fiche/:id" exact element={<DetailsSignalement />}/> */}
-                {/* <Route path="*" element={<NotFound />} /> */}
+                <Route path="/relationship" exact element={<TrustRelashionship/>} />
             </Routes>
         </BrowserRouter>
     );

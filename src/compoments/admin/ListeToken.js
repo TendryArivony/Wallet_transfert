@@ -230,7 +230,7 @@ const Tokens = () => {
                                             </div>
                                             <div class="modal-body">
                                         
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-12">
                                                {detail!==null &&
                                                     <ul>
                                                     <li><i class="bi bi-rounded-right"></i> <dt>Id:</dt><dd>{ detail.id} </dd></li>
@@ -285,7 +285,7 @@ const Tokens = () => {
                                                     <div className="row d-flex align-items-center">
                                                         <div className="col-9">
                                                         <ul>
-                                                        <li><i class="bi bi-rounded-right"></i> <dt>Traitée le::</dt><dd>{ tok.processed_at }</dd></li>
+                                                        <li><i class="bi bi-rounded-right"></i> <dt>Traitée le::</dt><dd>{tok.processed_at}</dd></li>
                                                         <li><i class="bi bi-rounded-right"></i> <dt>Sender_wallet:</dt><dd>{ tok.sender_wallet }</dd></li>
                                                         <li><i class="bi bi-rounded-right"></i> <dt>Receiver_wallet:</dt><dd>{ tok.receiver_wallet }</dd></li>      
                                                       </ul>

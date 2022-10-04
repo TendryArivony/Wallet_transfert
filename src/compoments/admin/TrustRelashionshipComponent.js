@@ -2,13 +2,12 @@ import React from 'react';
 import { Link } from "react-router-dom"
 import { useState, useEffect } from 'react';
 import baseURI from '../../utilitaire/baseURI';
-import ModifierType from '../ModifierType';
 
-const Wallet = () => {
-    const initialValue = { name: "" };
+const TrustRelashionship = () => {
+    const [trusts, setTrust] = useState(null);
+    const initialValue = { trust_request_type: "", requester_wallet: "" ,requestee_wallet: "" };
     const [formValues, setFormValues] = useState(initialValue);
     const [formErrors, setFormErrors] = useState({});
-    const [wallets, setWallet] = useState(null);
     const [isPending, setIsPending] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [isSubmit, setIsSubmit] = useState(false);
@@ -19,83 +18,83 @@ const Wallet = () => {
     const [errorInsertion, setErrorInsertion] = useState(null);
     const [modif, setModif] = useState(null);
 
-    const [url, setUrl] = useState("/wallets?limit=10");
+    const [url, setUrl] = useState("/trust_relationships?limit=10");
 
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
+    const handleChangerequest_type = (e) => {
+        const { value } = e.target;
+        formValues['trust_request_type'] =  value;
         verification(formValues);
-    }
+      }
+    
+      const handleChangeRequester = (e) => {
+        const { value } = e.target;
+        formValues['requester_wallet'] = value;
+        verification(formValues);
+      }
+    
+      const handleChangeRequestee = (e) => {
+        const { value } = e.target;
+        formValues['requestee_wallet'] = value;
+        verification(formValues);
+      }
 
-
-
-
+      const CreateTrust = (e) => {
+        e.preventDefault();
+        setFormErrors(verification(formValues));
+        console.log(formValues);
+      }
 
 
     const verification = (values) => {
         const errors = {};
         console.log("verification");
         // const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}#/i;
-        if (!values.name) {
-            errors.name = "Veuillez donner le nom du wallet";
+        if (!values.trust_request_type) {
+            errors.trust_request_type = "Veuillez donner le trust request type";
+        }
+        if (!values.requester_wallet) {
+            errors.requester_wallet = "Veuillez donner le requester wallet";
+        }
+        if (!values.requestee_wallet) {
+            errors.requestee_wallet = "Veuillez donner le requestee wallet";
         }
         return errors;
     }
 
-
-    const insertionWallet = (e) => {
-        e.preventDefault();//empeche page de recharger
-        setFormErrors(verification(formValues));
-        setIsSubmit(true);
-    }
-
-
-    async function insertion() {
-        const options = {
-            method: 'POST',
+    async function insertion(){
+        const options ={
+            method : 'POST',
             body: JSON.stringify(formValues),
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "Authorization": `Bearer ${token}`,
-                'TREETRACKER-API-KEY': 'B3zNihk1ckAd3CnP4Cul1aZvxdQfgrj5',
+            headers:{
+                "Content-Type" : "application/json",
+                "Accept" : "application/json",
+                "Authorization": `Bearer ${token}`
             },
         };
         setIsLoading(true);
-
-        await fetch(baseURI('/wallets'), options).then(res => {
+        
+        await fetch(baseURI('/trust_relationships'),options).then(res => {
             if (!res.ok) { // error coming back from server
                 throw Error('Erreur insertion !');
-            }
+            } 
             return res.json();
         }).then(data => {
             setIsLoading(false);
             console.log(data);
-            setWallet([...wallets, data]);
             setFormValues(initialValue)
         })
             .catch(err => {
-                if (err.name === 'AbortError') {
-                    console.log('fetch aborted')
-                } else {
-                    // auto catches network / connection error
-                    setIsLoading(false);
-                    // console.log(err.mess)
-                    setErrorInsertion(err.message);
-                }
-            })
+            if (err.name === 'AbortError') {
+                console.log('fetch aborted')
+            } else {
+                // auto catches network / connection error
+                setIsLoading(false);
+                // console.log(err.mess)
+                setErrorInsertion(err.message);
+            }
+        })
     }
-
-    useEffect(() => {
-        if (Object.keys(formErrors).length === 0 && isSubmit) {
-            insertion();
-            setWallet(wallets, formValues)
-        }
-    }, [formErrors])
-
-
-
 
     useEffect(() => {
         const abortCont = new AbortController();
@@ -119,7 +118,7 @@ const Wallet = () => {
                 .then(data => {
                     console.log(data);
                     setIsPending(false);
-                    setWallet(data.wallets);
+                    setTrust(data.trust_relationships);
                     setError(null);
                 })
                 .catch(err => {
@@ -148,11 +147,11 @@ const Wallet = () => {
                                 <div className="row align-items-center">
                                     <div className="col-md-12">
                                         <div className="page-header-title">
-                                            <h5 className="m-b-10">Wallet</h5>
+                                            <h5 className="m-b-10">Trust Relationship</h5>
                                         </div>
                                         <ul className="breadcrumb">
                                             <li className="breadcrumb-item"><Link to="/admin"><i className="feather icon-home"></i></Link></li>
-                                            <li className="breadcrumb-item"><a href="#!">Liste wallet</a></li>
+                                            <li className="breadcrumb-item"><a href="#!">Liste des trust relationship</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -167,10 +166,10 @@ const Wallet = () => {
                                     <div className="col-xl-12">
                                         <div className="card">
                                             <div className="card-header">
-                                                <h5>Wallet</h5>
+                                                <h5>Trust relationship</h5>
                                                 <button style={{ "float": "right" }} type="button" className="btn btn-outline-dark" title="" data-toggle="modal" data-target="#exampleModal"
                                                     data-original-title="Ajout nouveau type">
-                                                    <i className="feather icon-plus"></i> Nouveau wallet
+                                                    <i className="feather icon-plus"></i> Demander une nouvelle trust relationship a un autre wallet
                                                 </button>
                                             </div>
                                             <div className="card-block table-border-style">
@@ -180,20 +179,31 @@ const Wallet = () => {
                                                     <table className="table">
                                                         <thead>
                                                             <tr>
-                                                                <th>id</th>
-                                                                <th width="50%">Nom</th>
-                                                                <th>Nombre des tokens dans le wallet</th>
+                                                                <th>Type</th>
+                                                                <th >Request type</th>
+                                                                <th>State</th>
+                                                                <th>Created at</th>
+                                                                <th>Updated at</th>
+                                                                <th>Originating wallet</th>
+                                                                <th>Actor Wallet</th>
+                                                                <th>Target Wallet</th>
+
 
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            {wallets &&
+                                                            {trusts &&
                                                                 <>
-                                                                    {wallets.map((wal) =>
+                                                                    {trusts.map((tru) =>
                                                                         <tr>
-                                                                            <th scope="row">{wal.id}</th>
-                                                                            <td>{wal.name}</td>
-                                                                            <td>{wal.tokens_in_wallet}</td>
+                                                                            <th scope="row">{tru.type}</th>
+                                                                            <td>{tru.request_type}</td>
+                                                                            <td>{tru.state}</td>
+                                                                            <td>{tru.created_at}</td>
+                                                                            <td>{tru.updated_at}</td>
+                                                                            <td>{tru.originating_wallet}</td>
+                                                                            <td>{tru.actor_wallet}</td>
+                                                                            <td>{tru.target_wallet}</td>
                                                                         </tr>
                                                                     )}
                                                                 </>
@@ -214,23 +224,32 @@ const Wallet = () => {
                     </div>
                 </div>
             </div>
-
             <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">Ajouter un wallet</h5>
+                            <h5 className="modal-title" id="exampleModalLabel">Nouvelle trust relationship a un autre wallet</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form onSubmit={insertionWallet}>
+                            <form onSubmit={CreateTrust}>
                                 <div class="form-group">
-                                    <label for="recipient-name" class="col-form-label">Nom:</label>
-                                    <input type="text" class="form-control" id="type-name" name="name" value={formValues.name} onChange={handleChange} />
+                                    <label for="recipient-name" class="col-form-label">Trust request type:</label>
+                                    <input type="text" class="form-control" id="type-name" name="trust_request_type"  onChange={handleChangerequest_type} />
                                 </div>
-                                <p style={{ color: "red" }}>{formErrors.name}</p>
+                                <p style={{ color: "red" }}>{formErrors.trust_request_type}</p>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Requester wallet:</label>
+                                    <input type="text" class="form-control" id="type-name" name="requester_wallet"  onChange={handleChangeRequester} />
+                                </div>
+                                <p style={{ color: "red" }}>{formErrors.requester_wallet}</p>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">Requestee wallet:</label>
+                                    <input type="text" class="form-control" id="type-name" name="requestee_wallet" onChange={handleChangeRequestee} />
+                                </div>
+                                <p style={{ color: "red" }}>{formErrors.requestee_wallet}</p>
 
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -246,4 +265,4 @@ const Wallet = () => {
     );
 };
 
-export default Wallet;
+export default TrustRelashionship;

@@ -30,7 +30,7 @@ const Login = () => {
             if (res.ok) return res.json();
             else {
                 console.log(res);
-                if (res.status === 401) throw Error(res.message);
+                if (res.status === 401) throw Error('Verifiez vos informations !');
                 else if (res.status === 500) throw Error('Internal Serveur Error !');
                 else if (res.status === 400) throw Error('Verifiez vos informations !');
             }

@@ -10,9 +10,13 @@ const TransfersComponent = () => {
   const initialValue = { bundle: { bundle_size: "" }, sender_wallet: "", receiver_wallet: "" };
   const [formValues, setFormValues] = useState(initialValue);
   const tokenTab = [];
+  const [tokenCsv,setTokenCsv] = useState(null);
   const inputRef = useRef("");
   const multipleTokenInitialValue = { tokens: [], sender_wallet: "", receiver_wallet: "" };
   const [multipleFormValues, setMultipleFormValues] = useState(multipleTokenInitialValue);
+  const [CsvFormValues, setCsvFormValues] = useState(multipleTokenInitialValue);
+
+  const [csvFile, setCsvFile] = useState();
 
   const handleChangeBundle = (e) => {
     const { value } = e.target;
@@ -38,6 +42,7 @@ const TransfersComponent = () => {
     e.preventDefault();
     tokenTab.push(inputRef.current.value);
     inputRef.current.value = "";
+    console.log(tokenTab);
   }
 
   const handleChangeMultipleSender = (e) => {
@@ -54,6 +59,32 @@ const TransfersComponent = () => {
     e.preventDefault();
     multipleFormValues["tokens"] = tokenTab;
     console.log(multipleFormValues);
+  }
+
+  const doTransferFile= (e) => {
+    e.preventDefault();
+    multipleFormValues["tokens"] = tokenCsv;
+    console.log(multipleFormValues);
+  }
+
+
+  const processCSV = (str) => {
+    const header = str.slice(0,str.indexOf('\n'));
+    const rows = str.slice(str.indexOf('\n')+1).split('\n');
+    setTokenCsv(rows);
+    console.log(rows); 
+  }
+
+  const submit = () =>{
+    const file = csvFile;
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+      const text = e.target.result;
+      // console.log(text);
+      processCSV(text);
+    }
+    reader.readAsText(file);
   }
 
   return (
@@ -90,6 +121,9 @@ const TransfersComponent = () => {
                       <li class="nav-item">
                         <a class="nav-link text-uppercase" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Multiple</a>
                       </li>
+                      <li class="nav-item">
+                        <a class="nav-link text-uppercase" id="csvfile-tab" data-toggle="tab" href="#csvfile" role="tab" aria-controls="csvfile" aria-selected="false">By CSV file</a>
+                      </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                       <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -109,6 +143,28 @@ const TransfersComponent = () => {
                           <button type="submit" class="btn btn-primary mb-2">Transferer</button>
                         </form>
                       </div>
+                      <div class="tab-pane fade" id="csvfile" role="tabpanel" aria-labelledby="csvfile-tab">
+                        <form class="form-inline" onSubmit={doTransferFile}>
+                          <div class="form-group mb-2">
+                            <label for="staticEmail2" class="mr-2 sr-only">Sender Wallet</label>
+                            <input type="text" class="form-control" id="staticEmail2" name="sender_wallet" onChange={handleChangeSender} placeholder="Sender" />
+                          </div>
+                          <div class="form-group ml-sm-3 mb-2">
+                            <label for="inputPassword2" class="mr-2 sr-only">Receiver Wallet</label>
+                            <input type="text" class="form-control" id="inputPassword2" name="receiver_wallet" onChange={handleChangeReceiver} placeholder="Receiver" />
+                          </div>
+      
+                          <div class="form-group mx-sm-3 mb-2">
+                            <label for="bundleNumber" class="sr-only">Fichier</label>
+                            <input type="file" class="form-control"  id="csvFile" onChange={e => {setCsvFile(e.target.files[0])}} placeholder="File" />
+                          </div>
+                          <button type="submit" class="btn btn-primary mb-2" onClick={(e) => {e.preventDefault()
+                                                                            if(csvFile)submit()}} 
+                                     >  
+                                     Transferer
+                          </button>
+                        </form>
+                      </div>
                       <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                         {/* <div id="newList">
                           <p>{tokenTab.length}</p>
@@ -119,10 +175,28 @@ const TransfersComponent = () => {
                           </ul>
                         </div> */}
                         <div class="input-group mb-3">
-                          <input type="text" class="form-control" ref={inputRef} value={inputRef.current.value} placeholder="Token UUID" name="uuid" aria-label="Token UUID" aria-describedby="basic-addon2" />
+                          <input type="text" class="form-control" ref={inputRef}  placeholder="Token UUID" name="uuid" aria-label="Token UUID" aria-describedby="basic-addon2" />
                           <div class="input-group-append">
                             <button class="btn btn-primary" type="submit" onClick={addToList}>Ajouter à la liste</button>
                           </div>
+                          { console.log(tokenTab )  }
+                          { tokenTab &&
+                                                    <>
+                                                    {tokenTab.map((tok) =>
+                                       
+                                            
+                 
+                                                    <div className="card-block">
+                                                        <ul>
+                                                        <li><i class="bi bi-rounded-right"></i> <dd>{tok}</dd></li>
+                      
+                                                      </ul>
+                                                    </div>
+                                            
+                                      
+                                    )}
+                                    </>
+                                }
                         </div>
                         <form onSubmit={doTransferMultiple}>
                           <div class="row">

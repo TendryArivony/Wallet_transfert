@@ -20,10 +20,10 @@ const Navigation = () => {
                             <label>Navigation</label>
                         </li>
                         <li>
-                            <Link to="tokens"><span className="pcoded-micon"><i className="feather icon-home"></i></span><span className="pcoded-mtext">Liste des tokens dans ce wallet</span></Link>
+                            <Link to="../tokens"><span className="pcoded-micon"><i className="feather icon-home"></i></span><span className="pcoded-mtext">Liste des tokens dans ce wallet</span></Link>
                         </li>
                         <li data-username="form elements advance componant validation masking wizard picker select" className="nav-item">
-                            <Link to="wallets"><span className="pcoded-micon"><i className="feather icon-alert-octagon"></i></span><span className="pcoded-mtext">Liste de tous les wallet gérés</span></Link>
+                            <Link to="../wallets"><span className="pcoded-micon"><i className="feather icon-alert-octagon"></i></span><span className="pcoded-mtext">Liste de tous les wallet gérés</span></Link>
                         </li>
 
                         <li data-username="form elements advance componant validation masking wizard picker select" className="nav-item">
@@ -31,6 +31,9 @@ const Navigation = () => {
                         </li>
                         <li data-username="form elements advance componant validation masking wizard picker select" className="nav-item">
                             <Link to="#"><span className="pcoded-micon"><i className="feather icon-users"></i></span><span className="pcoded-mtext">Voir les transferts</span></Link>
+                        </li>
+                        <li data-username="form elements advance componant validation masking wizard picker select" className="nav-item">
+                            <Link to="../relationship"><span className="pcoded-micon"><i className="feather icon-box"></i></span><span className="pcoded-mtext">Trust relationship</span></Link>
                         </li>
 
                     </ul>
