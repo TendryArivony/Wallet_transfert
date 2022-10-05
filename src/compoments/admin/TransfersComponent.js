@@ -10,7 +10,7 @@ const TransfersComponent = () => {
   const initialValue = { bundle: { bundle_size: "" }, sender_wallet: "", receiver_wallet: "" };
   const [formValues, setFormValues] = useState(initialValue);
   const tokenTab = [];
-  const [tokenCsv,setTokenCsv] = useState(null);
+  const [tokenCsv, setTokenCsv] = useState(null);
   const inputRef = useRef("");
   const multipleTokenInitialValue = { tokens: [], sender_wallet: "", receiver_wallet: "" };
   const [multipleFormValues, setMultipleFormValues] = useState(multipleTokenInitialValue);
@@ -61,28 +61,27 @@ const TransfersComponent = () => {
     console.log(multipleFormValues);
   }
 
-  const doTransferFile= (e) => {
+  const doTransferFile = (e) => {
     e.preventDefault();
-    multipleFormValues["tokens"] = tokenCsv;
+    if (csvFile) submit();
     console.log(multipleFormValues);
   }
 
 
   const processCSV = (str) => {
-    const header = str.slice(0,str.indexOf('\n'));
-    const rows = str.slice(str.indexOf('\n')+1).split('\n');
+    const header = str.slice(0, str.indexOf('\n'));
+    const rows = str.slice(str.indexOf('\n') + 1).replaceAll('"', '').split("\n");
     setTokenCsv(rows);
-    console.log(rows); 
   }
 
-  const submit = () =>{
+  const submit = () => {
     const file = csvFile;
     const reader = new FileReader();
 
-    reader.onload = function(e){
+    reader.onload = function (e) {
       const text = e.target.result;
-      // console.log(text);
       processCSV(text);
+      multipleFormValues["tokens"] = tokenCsv;
     }
     reader.readAsText(file);
   }
@@ -147,21 +146,19 @@ const TransfersComponent = () => {
                         <form class="form-inline" onSubmit={doTransferFile}>
                           <div class="form-group mb-2">
                             <label for="staticEmail2" class="mr-2 sr-only">Sender Wallet</label>
-                            <input type="text" class="form-control" id="staticEmail2" name="sender_wallet" onChange={handleChangeSender} placeholder="Sender" />
+                            <input type="text" class="form-control" id="staticEmail2" name="sender_wallet" onChange={handleChangeMultipleSender} placeholder="Sender" />
                           </div>
                           <div class="form-group ml-sm-3 mb-2">
                             <label for="inputPassword2" class="mr-2 sr-only">Receiver Wallet</label>
-                            <input type="text" class="form-control" id="inputPassword2" name="receiver_wallet" onChange={handleChangeReceiver} placeholder="Receiver" />
+                            <input type="text" class="form-control" id="inputPassword2" name="receiver_wallet" onChange={handleChangeMultipleReceiver} placeholder="Receiver" />
                           </div>
-      
+
                           <div class="form-group mx-sm-3 mb-2">
                             <label for="bundleNumber" class="sr-only">Fichier</label>
-                            <input type="file" class="form-control"  id="csvFile" onChange={e => {setCsvFile(e.target.files[0])}} placeholder="File" />
+                            <input type="file" class="form-control" id="csvFile" onChange={e => { setCsvFile(e.target.files[0]) }} placeholder="File" />
                           </div>
-                          <button type="submit" class="btn btn-primary mb-2" onClick={(e) => {e.preventDefault()
-                                                                            if(csvFile)submit()}} 
-                                     >  
-                                     Transferer
+                          <button type="submit" class="btn btn-primary mb-2">
+                            Transferer
                           </button>
                         </form>
                       </div>
@@ -175,28 +172,27 @@ const TransfersComponent = () => {
                           </ul>
                         </div> */}
                         <div class="input-group mb-3">
-                          <input type="text" class="form-control" ref={inputRef}  placeholder="Token UUID" name="uuid" aria-label="Token UUID" aria-describedby="basic-addon2" />
+                          <input type="text" class="form-control" ref={inputRef} placeholder="Token UUID" name="uuid" aria-label="Token UUID" aria-describedby="basic-addon2" />
                           <div class="input-group-append">
                             <button class="btn btn-primary" type="submit" onClick={addToList}>Ajouter à la liste</button>
                           </div>
-                          { console.log(tokenTab )  }
-                          { tokenTab &&
-                                                    <>
-                                                    {tokenTab.map((tok) =>
-                                       
-                                            
-                 
-                                                    <div className="card-block">
-                                                        <ul>
-                                                        <li><i class="bi bi-rounded-right"></i> <dd>{tok}</dd></li>
-                      
-                                                      </ul>
-                                                    </div>
-                                            
-                                      
-                                    )}
-                                    </>
-                                }
+                          {tokenTab &&
+                            <>
+                              {tokenTab.map((tok) =>
+
+
+
+                                <div className="card-block">
+                                  <ul>
+                                    <li><i class="bi bi-rounded-right"></i> <dd>{tok}</dd></li>
+
+                                  </ul>
+                                </div>
+
+
+                              )}
+                            </>
+                          }
                         </div>
                         <form onSubmit={doTransferMultiple}>
                           <div class="row">

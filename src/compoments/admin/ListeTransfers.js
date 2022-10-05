@@ -61,7 +61,7 @@ const ListeTransfers = () => {
   useEffect(() => {
     const abortCont = new AbortController();
     setTimeout(() => {
-      fetch(baseURI(url + "?limit=5"),
+      fetch(baseURI(url + "?limit=10"),
         {
           method: 'GET',
           headers: {
