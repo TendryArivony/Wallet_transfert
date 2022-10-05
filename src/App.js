@@ -13,9 +13,7 @@ import Tokens from './pages/admin/Tokens';
 import Wallet from './pages/admin/Wallet';
 import Transfers from './pages/admin/Transfers';
 import TrustRelashionship from './pages/admin/TrustRelashionship';
-
-
-
+import TransfersList from './pages/admin/TransfersList';
 
 const App = () => {
     return (
@@ -27,7 +25,13 @@ const App = () => {
                 <Route path="/wallets" exact element={<Wallet />} />
                 <Route path="/" exact element={<Login />} />
                 <Route path="/transfers" exact element={<Transfers />} />
-                <Route path="/relationship" exact element={<TrustRelashionship/>} />
+                <Route path="/relationship" exact element={<TrustRelashionship />} />
+                <Route path="/transfersList" exact element={<TransfersList />} />
+                {/* <Route path="/responsables" exact element={<Responsable />}/>
+                <Route path="/affectation" exact element={<Affectation />}/>
+                <Route path="/signalement" exact element={<Signalement />}/>
+                <Route path="/fiche/:id" exact element={<DetailsSignalement />}/> */}
+                {/* <Route path="*" element={<NotFound />} /> */}
             </Routes>
         </BrowserRouter>
     );

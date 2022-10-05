@@ -30,7 +30,7 @@ const Navigation = () => {
                             <Link to="../transfers"><span className="pcoded-micon"><i className="feather icon-box"></i></span><span className="pcoded-mtext">Transférer des tokens entre les wallets</span></Link>
                         </li>
                         <li data-username="form elements advance componant validation masking wizard picker select" className="nav-item">
-                            <Link to="#"><span className="pcoded-micon"><i className="feather icon-users"></i></span><span className="pcoded-mtext">Voir les transferts</span></Link>
+                            <Link to="../transfersList"><span className="pcoded-micon"><i className="feather icon-users"></i></span><span className="pcoded-mtext">Voir les transferts</span></Link>
                         </li>
                         <li data-username="form elements advance componant validation masking wizard picker select" className="nav-item">
                             <Link to="../relationship"><span className="pcoded-micon"><i className="feather icon-box"></i></span><span className="pcoded-mtext">Trust relationship</span></Link>
