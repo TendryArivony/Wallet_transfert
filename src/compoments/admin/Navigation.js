@@ -10,7 +10,7 @@ const Navigation = () => {
                         <div className="b-bg">
                             <i className="feather icon-trending-up"></i>
                         </div>
-                        <span className="b-title">Bondy</span>
+                        <span className="b-title">Wallet Token Transfers</span>
                     </a>
                     <a className="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
                 </div>
