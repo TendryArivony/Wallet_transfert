@@ -59,7 +59,7 @@ const Wallet = () => {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
                 "Authorization": `Bearer ${token}`,
-                'TREETRACKER-API-KEY': 'B3zNihk1ckAd3CnP4Cul1aZvxdQfgrj5',
+                'TREETRACKER-API-KEY': 'ybvrLbs5iCRRx9Jul5naIStisG3qjIXT',
             },
         };
         setIsLoading(true);

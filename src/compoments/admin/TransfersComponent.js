@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Link } from "react-router-dom"
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Alert } from 'react'; 
 import baseURI from '../../utilitaire/baseURI';
 
 const TransfersComponent = () => {
@@ -12,6 +12,12 @@ const TransfersComponent = () => {
   const tokenTab = [];
   const [tokenCsv, setTokenCsv] = useState(null);
   const inputRef = useRef("");
+  const [erreur, setErreur] = useState(null);
+  const [formErrors, setFormErrors] = useState({});
+  const [isPending, setIsPending] = useState(true);
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [errorInsertion, setErrorInsertion] = useState(null);
+  const [isLoading,setIsLoading] = useState(false);
   const multipleTokenInitialValue = { tokens: [], sender_wallet: "", receiver_wallet: "" };
   const [multipleFormValues, setMultipleFormValues] = useState(multipleTokenInitialValue);
   const [CsvFormValues, setCsvFormValues] = useState(multipleTokenInitialValue);
@@ -20,7 +26,7 @@ const TransfersComponent = () => {
 
   const handleChangeBundle = (e) => {
     const { value } = e.target;
-    formValues['bundle'] = { bundle_size: value };
+    formValues['bundle'] = { bundle_size: value }; 
   }
 
   const handleChangeSender = (e) => {
@@ -45,6 +51,20 @@ const TransfersComponent = () => {
     console.log(tokenTab);
   }
 
+  const verification = (values) => {
+    const errors = {};
+    console.log("verification");
+    // const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}#/i;
+    if (!values.sender_wallet) {
+        errors.sender_wallet = "Veuillez donner le sender wallet";
+    }
+    if (!values.receiver_wallet) {
+      errors.receiver_wallet = "Veuillez donner le receiver wallet";
+  }
+
+    return errors;
+}
+
   const handleChangeMultipleSender = (e) => {
     const { value } = e.target;
     multipleFormValues["sender_wallet"] = value;
@@ -52,27 +72,78 @@ const TransfersComponent = () => {
 
   const handleChangeMultipleReceiver = (e) => {
     const { value } = e.target;
+    multipleFormValues["tokens"] = tokenTab;
+    if (csvFile) submit();
     multipleFormValues["receiver_wallet"] = value;
   }
 
   const doTransferMultiple = (e) => {
     e.preventDefault();
-    multipleFormValues["tokens"] = tokenTab;
     console.log(multipleFormValues);
   }
 
   const doTransferFile = (e) => {
     e.preventDefault();
     if (csvFile) submit();
+    setFormErrors(verification(multipleFormValues));
+    setIsSubmit(true);
     console.log(multipleFormValues);
+  }
+  
+
+  async function insertionCSV(){
+    const options ={
+        method : 'POST',
+        body: JSON.stringify(multipleFormValues),
+        headers:{
+            "Content-Type" : "application/json",
+            "Accept" : "application/json",
+            'TREETRACKER-API-KEY': 'ybvrLbs5iCRRx9Jul5naIStisG3qjIXT',
+            "Authorization": `Bearer ${token}`
+        },
+    };
+    setIsLoading(true);
+  const response = await fetch(baseURI('/transfers'), options);
+  if (response.ok) {
+    console.log('Tranfert bien fait');
+    setIsLoading(false);
+    
+  }
+  else {
+      console.log(response);
+      if (response.status === 401) console.log('401 pr');
+      else if (response.status === 500) console.log('500 pr');
+      else if (response.status === 400) console.log('400 pr'); 
+      else if (response.status === 404) console.log('404 pr');
+  }
+  const data = await response.json();
+  if(data.message) setErreur(data.message);
+  console.log(data);
+  console.log(erreur);
+
+}
+
+  function removeItemAll(arr, value) {
+    var i = 0; 
+    while (i < arr.length) {
+      if (arr[i] === value) {
+        arr.splice(i, 1);
+      } else {
+        ++i;
+      }
+    }
+    return arr;
   }
 
 
   const processCSV = (str) => {
     const header = str.slice(0, str.indexOf('\n'));
-    const rows = str.slice(str.indexOf('\n') + 1).replaceAll('"', '').split("\n");
-    setTokenCsv(rows);
-  }
+    const rows = str.slice(str.indexOf('\n') + 1).replaceAll('"', '').replaceAll('\r','').split("\n");
+    console.log(removeItemAll(rows,''));
+    setTokenCsv(removeItemAll(rows,''));
+    multipleFormValues["tokens"] =  removeItemAll(rows,'');
+    }
+   
 
   const submit = () => {
     const file = csvFile;
@@ -85,6 +156,12 @@ const TransfersComponent = () => {
     }
     reader.readAsText(file);
   }
+  useEffect(() => {
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      insertionCSV();
+    }
+
+}, [formErrors])
 
   return (
     <section className="pcoded-main-container">
@@ -141,9 +218,14 @@ const TransfersComponent = () => {
                           </div>
                           <button type="submit" class="btn btn-primary mb-2">Transferer</button>
                         </form>
+                        <p style={{ color: "red" }}>{erreur}</p>  
                       </div>
                       <div class="tab-pane fade" id="csvfile" role="tabpanel" aria-labelledby="csvfile-tab">
                         <form class="form-inline" onSubmit={doTransferFile}>
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="bundleNumber" class="sr-only">Fichier</label>
+                            <input type="file" class="form-control" id="csvFile"  onChange={e => { setCsvFile(e.target.files[0]) }} placeholder="File" />
+                          </div>
                           <div class="form-group mb-2">
                             <label for="staticEmail2" class="mr-2 sr-only">Sender Wallet</label>
                             <input type="text" class="form-control" id="staticEmail2" name="sender_wallet" onChange={handleChangeMultipleSender} placeholder="Sender" />
@@ -153,14 +235,14 @@ const TransfersComponent = () => {
                             <input type="text" class="form-control" id="inputPassword2" name="receiver_wallet" onChange={handleChangeMultipleReceiver} placeholder="Receiver" />
                           </div>
 
-                          <div class="form-group mx-sm-3 mb-2">
-                            <label for="bundleNumber" class="sr-only">Fichier</label>
-                            <input type="file" class="form-control" id="csvFile" onChange={e => { setCsvFile(e.target.files[0]) }} placeholder="File" />
-                          </div>
+                         
                           <button type="submit" class="btn btn-primary mb-2">
                             Transferer
                           </button>
                         </form>
+                        <p style={{ color: "red" }}>{formErrors.sender_wallet}</p>
+                        <p style={{ color: "red" }}>{formErrors.receiver_wallet}</p>
+                  
                       </div>
                       <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                         {/* <div id="newList">
