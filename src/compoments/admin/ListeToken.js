@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { useState, useEffect } from 'react';
 import moment from "moment";   
 import baseURI from '../../utilitaire/baseURI';
+import Pagination from '../../compoments/admin/Pagination';
 
 
 const Tokens = () => {
@@ -154,11 +155,11 @@ const Tokens = () => {
                             <div className="row align-items-center">
                                 <div className="col-md-12">
                                     <div className="page-header-title">
-                                        <h5 className="m-b-10">Liste des Tokens</h5>
+                                        <h5 className="m-b-10">Liste of tokens</h5>
                                     </div>
                                     <ul className="breadcrumb">
                                         <li className="breadcrumb-item"><Link to="/admin"><i className="feather icon-home"></i></Link></li>
-                                        <li className="breadcrumb-item"><a href="#!">Liste des Tokens</a></li>
+                                        <li className="breadcrumb-item"><a href="#!">Liste of tokens</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -175,7 +176,7 @@ const Tokens = () => {
                                         
                                         <div className="card-block table-border-style">
                                             { error && <p> {error}</p> }
-                                            { isPending && <p> Chargement ... </p> }
+                                            { isPending && <p> Loading ... </p> }
                                             <div className="table-responsive">
                                                 <table className="table">
                                                     <thead>
@@ -216,6 +217,7 @@ const Tokens = () => {
                                                     
                                                 </table>
                                             </div>
+                                            <Pagination pages={10} ></Pagination>
                                         </div>
                                     </div>
                                 </div>

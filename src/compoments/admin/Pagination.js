@@ -4,8 +4,8 @@ const Pagination = ({ pages, change, current }) => {
 
     return (
         <nav aria-label="Table Paging" className="my-3">
-            <ReactPaginate  previousLabel='Précédent'
-                            nextLabel='Suivant'
+            <ReactPaginate  previousLabel='Prev'
+                            nextLabel='Next'
                             breakLabel='...'
                             pageCount={pages}
                             marginPagesDisplayed={2}

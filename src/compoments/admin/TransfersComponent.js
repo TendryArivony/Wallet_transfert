@@ -17,7 +17,7 @@ const TransfersComponent = () => {
   const inputRef = useRef("");
   const [erreur, setErreur] = useState(null);
   const [formErrors, setFormErrors] = useState({});
-  const [isPending, setIsPending] = useState(true);
+  const [isPending, setIsPending] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [errorInsertion, setErrorInsertion] = useState(null);
   const [isLoading,setIsLoading] = useState(false);
@@ -45,7 +45,7 @@ const TransfersComponent = () => {
   const doTransferSingle = (e) => {
     e.preventDefault();
     setFormErrors(verification(formValues));
-    // setIsSubmit(true);
+    setIsPending(true);
     console.log(formValues);
   }
 
@@ -112,6 +112,7 @@ const TransfersComponent = () => {
   if (response.ok) {
     console.log('Successful transfer');
     setIsLoading(false);
+    alert('Successful transfer');
 
   }
   else {
@@ -133,7 +134,7 @@ const TransfersComponent = () => {
 async function insertionBundle(){
   const options ={
       method : 'POST',
-      body: JSON.stringify(multipleFormValues),
+      body: JSON.stringify(formValues),
       headers:{
           "Content-Type" : "application/json",
           "Accept" : "application/json",
@@ -146,6 +147,7 @@ const response = await fetch(baseURI('/transfers'), options);
 if (response.ok) {
   console.log('Successful transfer');
   setIsLoading(false);
+  alert('Successful transfer');
 
 }
 else {
@@ -203,6 +205,12 @@ console.log(erreur);
     }
 
 }, [formErrors])
+useEffect(() => {
+  if (Object.keys(formErrors).length === 0 && isPending) {
+    insertionBundle();
+  }
+
+}, [formErrors])
 
   return (
     <section className="pcoded-main-container">
@@ -219,7 +227,7 @@ console.log(erreur);
                     </div>
                     <ul className="breadcrumb">
                       <li className="breadcrumb-item"><Link to="../wallets"><i className="feather icon-home"></i></Link></li>
-                      <li className="breadcrumb-item"><a href="#!">Transferring tokens</a></li>
+                      <li className="breadcrumb-item"><a href="#!">Transfering tokens</a></li>
                     </ul>
                   </div>
                 </div>
@@ -255,8 +263,9 @@ console.log(erreur);
                             <input type="number" class="form-control" id="bundleNumber" name="bundle" onChange={handleChangeBundle} placeholder="Number" />
                           </div>
                          
-                          {!isLoading && <button type='submit' className="btn btn-primary shadow-2 mb-4">Transferer</button>}
-                            {isLoading && <button className='btn btn-secondary' type='button' disabled=''><span className='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span></button>}
+                          {!isLoading && <button type='submit' className="btn btn-primary shadow-2 mb-4">Transfer</button>}
+                            {isLoading && <Button loading appearance="primary" 
+                               className="btn btn-primary shadow-2 mb-4">Loading Button 2</Button>}
 
                         </form>
                         <p style={{ color: "red" }}>{formErrors.sender_wallet}</p>

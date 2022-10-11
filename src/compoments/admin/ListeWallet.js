@@ -19,7 +19,8 @@ const Wallet = () => {
     const [errorInsertion, setErrorInsertion] = useState(null);
     const [modif, setModif] = useState(null);
 
-    const [url, setUrl] = useState("/wallets?limit=10");
+    const [url, setUrl] = useState("/wallets?limit=10"); 
+
 
 
     const handleChange = (e) => {
@@ -170,7 +171,7 @@ const Wallet = () => {
                                                 <h5>Wallet</h5>
                                                 <button style={{ "float": "right" }} type="button" className="btn btn-outline-dark" title="" data-toggle="modal" data-target="#exampleModal"
                                                     data-original-title="Ajout nouveau type">
-                                                    <i className="feather icon-plus"></i> Create new Wallet_id
+                                                    <i className="feather icon-plus"></i> Create new Wallet
                                                 </button>
                                             </div>
                                             <div className="card-block table-border-style">

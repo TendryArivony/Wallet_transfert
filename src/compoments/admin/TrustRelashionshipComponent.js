@@ -152,7 +152,7 @@ const TrustRelashionship = () => {
                                         </div>
                                         <ul className="breadcrumb">
                                             <li className="breadcrumb-item"><Link to="/admin"><i className="feather icon-home"></i></Link></li>
-                                            <li className="breadcrumb-item"><a href="#!">Liste des trust relationship</a></li>
+                                            <li className="breadcrumb-item"><a href="#!">Trust relationship list</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -170,12 +170,12 @@ const TrustRelashionship = () => {
                                                 <h5>Trust relationship</h5>
                                                 <button style={{ "float": "right" }} type="button" className="btn btn-outline-dark" title="" data-toggle="modal" data-target="#exampleModal"
                                                     data-original-title="Ajout nouveau type">
-                                                    <i className="feather icon-plus"></i> Demander une nouvelle trust relationship a un autre wallet
+                                                    <i className="feather icon-plus"></i> Request a new trust relationship
                                                 </button>
                                             </div>
                                             <div className="card-block table-border-style">
                                                 {error && <p> {error}</p>}
-                                                {isPending && <p> Chargement ... </p>}
+                                                {isPending && <p> Loading ... </p>}
                                                 <div className="table-responsive">
                                                     <table className="table">
                                                         <thead>
@@ -229,7 +229,7 @@ const TrustRelashionship = () => {
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">Nouvelle trust relationship a un autre wallet</h5>
+                            <h5 className="modal-title" id="exampleModalLabel">New trust relationship</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -253,8 +253,8 @@ const TrustRelashionship = () => {
                                 <p style={{ color: "red" }}>{formErrors.requestee_wallet}</p>
 
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                    <button type="submit" class="btn btn-primary">Valider</button>
+                                    <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Validate</button>
                                 </div>
                             </form>
                         </div>
