@@ -2,6 +2,9 @@ import React, { useRef } from 'react';
 import { Link } from "react-router-dom"
 import { useState, useEffect, Alert } from 'react'; 
 import baseURI from '../../utilitaire/baseURI';
+import { Button } from "rsuite";
+// Default CSS
+import "rsuite/dist/rsuite.min.css";
 
 const TransfersComponent = () => {
   const token = JSON.parse(localStorage.getItem('tokens'));
@@ -41,6 +44,8 @@ const TransfersComponent = () => {
 
   const doTransferSingle = (e) => {
     e.preventDefault();
+    setFormErrors(verification(formValues));
+    // setIsSubmit(true);
     console.log(formValues);
   }
 
@@ -56,10 +61,10 @@ const TransfersComponent = () => {
     console.log("verification");
     // const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}#/i;
     if (!values.sender_wallet) {
-        errors.sender_wallet = "Veuillez donner le sender wallet";
+        errors.sender_wallet = "Please give the sender wallet";
     }
     if (!values.receiver_wallet) {
-      errors.receiver_wallet = "Veuillez donner le receiver wallet";
+      errors.receiver_wallet = "Please give the receiver wallet";
   }
 
     return errors;
@@ -105,9 +110,9 @@ const TransfersComponent = () => {
     setIsLoading(true);
   const response = await fetch(baseURI('/transfers'), options);
   if (response.ok) {
-    console.log('Tranfert bien fait');
+    console.log('Successful transfer');
     setIsLoading(false);
-    
+
   }
   else {
       console.log(response);
@@ -115,11 +120,47 @@ const TransfersComponent = () => {
       else if (response.status === 500) console.log('500 pr');
       else if (response.status === 400) console.log('400 pr'); 
       else if (response.status === 404) console.log('404 pr');
+      setIsLoading(false);
   }
   const data = await response.json();
-  if(data.message) setErreur(data.message);
+  if(data.message) alert(data.message);
+  
   console.log(data);
   console.log(erreur);
+
+}
+
+async function insertionBundle(){
+  const options ={
+      method : 'POST',
+      body: JSON.stringify(multipleFormValues),
+      headers:{
+          "Content-Type" : "application/json",
+          "Accept" : "application/json",
+          'TREETRACKER-API-KEY': 'ybvrLbs5iCRRx9Jul5naIStisG3qjIXT',
+          "Authorization": `Bearer ${token}`
+      },
+  };
+  setIsLoading(true);
+const response = await fetch(baseURI('/transfers'), options);
+if (response.ok) {
+  console.log('Successful transfer');
+  setIsLoading(false);
+
+}
+else {
+    console.log(response);
+    if (response.status === 401) console.log('401 pr');
+    else if (response.status === 500) console.log('500 pr');
+    else if (response.status === 400) console.log('400 pr'); 
+    else if (response.status === 404) console.log('404 pr');
+    setIsLoading(false);
+}
+const data = await response.json();
+if(data.message) alert(data.message);
+
+console.log(data);
+console.log(erreur);
 
 }
 
@@ -178,7 +219,7 @@ const TransfersComponent = () => {
                     </div>
                     <ul className="breadcrumb">
                       <li className="breadcrumb-item"><Link to="../wallets"><i className="feather icon-home"></i></Link></li>
-                      <li className="breadcrumb-item"><a href="#!">Transférer des tokens</a></li>
+                      <li className="breadcrumb-item"><a href="#!">Transferring tokens</a></li>
                     </ul>
                   </div>
                 </div>
@@ -192,10 +233,7 @@ const TransfersComponent = () => {
                   <div class="col-sm-12">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                       <li class="nav-item">
-                        <a class="nav-link active text-uppercase" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Unique</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link text-uppercase" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Multiple</a>
+                        <a class="nav-link active text-uppercase" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Random</a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link text-uppercase" id="csvfile-tab" data-toggle="tab" href="#csvfile" role="tab" aria-controls="csvfile" aria-selected="false">By CSV file</a>
@@ -216,14 +254,19 @@ const TransfersComponent = () => {
                             <label for="bundleNumber" class="sr-only">Number</label>
                             <input type="number" class="form-control" id="bundleNumber" name="bundle" onChange={handleChangeBundle} placeholder="Number" />
                           </div>
-                          <button type="submit" class="btn btn-primary mb-2">Transferer</button>
+                         
+                          {!isLoading && <button type='submit' className="btn btn-primary shadow-2 mb-4">Transferer</button>}
+                            {isLoading && <button className='btn btn-secondary' type='button' disabled=''><span className='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span></button>}
+
                         </form>
+                        <p style={{ color: "red" }}>{formErrors.sender_wallet}</p>
+                          <p style={{ color: "red" }}>{formErrors.receiver_wallet}</p>
                         <p style={{ color: "red" }}>{erreur}</p>  
                       </div>
                       <div class="tab-pane fade" id="csvfile" role="tabpanel" aria-labelledby="csvfile-tab">
                         <form class="form-inline" onSubmit={doTransferFile}>
                         <div class="form-group mx-sm-3 mb-2">
-                            <label for="bundleNumber" class="sr-only">Fichier</label>
+                            <label for="bundleNumber" class="sr-only">File</label>
                             <input type="file" class="form-control" id="csvFile"  onChange={e => { setCsvFile(e.target.files[0]) }} placeholder="File" />
                           </div>
                           <div class="form-group mb-2">
@@ -236,12 +279,14 @@ const TransfersComponent = () => {
                           </div>
 
                          
-                          <button type="submit" class="btn btn-primary mb-2">
-                            Transferer
-                          </button>
+                          {!isLoading && <button type='submit' className="btn btn-primary shadow-2 mb-4">Transfer</button>}
+                            {isLoading &&  <Button loading appearance="primary" 
+                               className="btn btn-primary shadow-2 mb-4">Loading Button 2</Button>}
+
                         </form>
                         <p style={{ color: "red" }}>{formErrors.sender_wallet}</p>
                         <p style={{ color: "red" }}>{formErrors.receiver_wallet}</p>
+                        <p style={{ color: "red" }}>{erreur}</p>  
                   
                       </div>
                       <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -256,7 +301,7 @@ const TransfersComponent = () => {
                         <div class="input-group mb-3">
                           <input type="text" class="form-control" ref={inputRef} placeholder="Token UUID" name="uuid" aria-label="Token UUID" aria-describedby="basic-addon2" />
                           <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit" onClick={addToList}>Ajouter à la liste</button>
+                            <button class="btn btn-primary" type="submit" onClick={addToList}>Add to the list</button>
                           </div>
                           {tokenTab &&
                             <>
@@ -283,7 +328,7 @@ const TransfersComponent = () => {
                                 <label for="exampleInputPassword1">Sender</label>
                                 <input type="text" class="form-control" id="exampleInputPassword1" name="sender" onChange={handleChangeMultipleSender} placeholder="Sender" />
                               </div>
-                              <button type="submit" class="btn btn-primary">Transferer</button>
+                              <button type="submit" class="btn btn-primary">Transfer</button>
                             </div>
                             <div class="col-md-6">
                               <div class="form-group">

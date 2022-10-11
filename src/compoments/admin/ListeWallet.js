@@ -152,7 +152,7 @@ const Wallet = () => {
                                         </div>
                                         <ul className="breadcrumb">
                                             <li className="breadcrumb-item"><Link to="/admin"><i className="feather icon-home"></i></Link></li>
-                                            <li className="breadcrumb-item"><a href="#!">Liste wallet</a></li>
+                                            <li className="breadcrumb-item"><a href="#!">Wallet list</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -170,19 +170,19 @@ const Wallet = () => {
                                                 <h5>Wallet</h5>
                                                 <button style={{ "float": "right" }} type="button" className="btn btn-outline-dark" title="" data-toggle="modal" data-target="#exampleModal"
                                                     data-original-title="Ajout nouveau type">
-                                                    <i className="feather icon-plus"></i> Nouveau wallet
+                                                    <i className="feather icon-plus"></i> Create new Wallet_id
                                                 </button>
                                             </div>
                                             <div className="card-block table-border-style">
                                                 {error && <p> {error}</p>}
-                                                {isPending && <p> Chargement ... </p>}
+                                                {isPending && <p> Loading ... </p>}
                                                 <div className="table-responsive">
                                                     <table className="table">
                                                         <thead>
                                                             <tr>
                                                                 <th>id</th>
-                                                                <th width="50%">Nom</th>
-                                                                <th>Nombre des tokens dans le wallet</th>
+                                                                <th width="50%">Name</th>
+                                                                <th>Number of tokens in the wallet</th>
 
                                                             </tr>
                                                         </thead>
@@ -219,7 +219,7 @@ const Wallet = () => {
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">Ajouter un wallet</h5>
+                            <h5 className="modal-title" id="exampleModalLabel">Add a wallet</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -227,14 +227,14 @@ const Wallet = () => {
                         <div class="modal-body">
                             <form onSubmit={insertionWallet}>
                                 <div class="form-group">
-                                    <label for="recipient-name" class="col-form-label">Nom:</label>
+                                    <label for="recipient-name" class="col-form-label">Name:</label>
                                     <input type="text" class="form-control" id="type-name" name="name" value={formValues.name} onChange={handleChange} />
                                 </div>
                                 <p style={{ color: "red" }}>{formErrors.name}</p>
 
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                    <button type="submit" class="btn btn-primary">Valider</button>
+                                    <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Validate</button>
                                 </div>
                             </form>
                         </div>

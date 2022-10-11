@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom"
 import { useState, useEffect } from 'react';
+import moment from "moment";   
 import baseURI from '../../utilitaire/baseURI';
 
 
@@ -105,7 +106,7 @@ const Tokens = () => {
         useEffect(() => {
             const abortCont = new AbortController();
             setTimeout(() => {
-                fetch(baseURI(url+"?limit=5"),
+                fetch(baseURI(url+"?limit=10"),
                     {
                         method: 'GET',
                         headers:{
@@ -182,7 +183,7 @@ const Tokens = () => {
                                                             <th>Id</th>
                                                             <th width="50%">Capture_id</th>
                                                             <th>Wallet_id</th>
-                                                            <th>Cree le</th>
+                                                            <th>Created on</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -193,18 +194,18 @@ const Tokens = () => {
                                                             <th scope="row">{ tok.id }</th>
                                                             <td>{ tok.capture_id }</td>
                                                             <td>{ tok.wallet_id }</td>
-                                                            <td>{ tok.created_at }</td>
+                                                            <td>{ moment(tok.created_at).utc().format('DD/MM/YYYY HH:mm:ss')}</td>
                                                             <td><button style={{ "float": "right" }} type="button" className="btn btn-outline-dark" title="" data-toggle="modal" data-target="#exampleModal" onClick={() => 
                                                                         GetDetail(tok.id)
                                                                     }
                                                                 data-original-title="Voir detail token">
-                                                                 Voir detail
+                                                                 See details
                                                             </button></td>
                                                             <td><button style={{ "float": "right" }} type="button" className="btn btn-outline-dark" title="" data-toggle="modal" data-target="#transaction" onClick={() => 
                                                                         GetTransaction(tok.id)
                                                                     }
                                                                 data-original-title="Voir transaction token">
-                                                                 Voir historique de transaction
+                                                                 See transaction history
                                                             </button></td>
                                                             
                                                         </tr>
@@ -223,7 +224,7 @@ const Tokens = () => {
                                         <div className="modal-dialog" role="document">
                                             <div className="modal-content">
                                             <div className="modal-header">
-                                                <h5 className="modal-title" id="exampleModalLabel">Details du token</h5>
+                                                <h5 className="modal-title" id="exampleModalLabel">Token details</h5>
                                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -236,8 +237,8 @@ const Tokens = () => {
                                                     <li><i class="bi bi-rounded-right"></i> <dt>Id:</dt><dd>{ detail.id} </dd></li>
                                                     <li><i class="bi bi-rounded-right"></i> <dt>Capture_id:</dt><dd>{ detail.capture_id} </dd></li>
                                                     <li><i class="bi bi-rounded-right"></i> <dt>Wallet_id:</dt><dd>{ detail.wallet_id} </dd></li>
-                                                    <li><i class="bi bi-rounded-right"></i> <dt>Cree le:</dt><dd>{ detail.created_at} </dd></li>
-                                                    <li><i class="bi bi-rounded-right"></i> <dt>Modifie le:</dt><dd>{ detail.updated_at} </dd></li>
+                                                    <li><i class="bi bi-rounded-right"></i> <dt>Created on:</dt><dd>{ moment(detail.created_at).utc().format('DD/MM/YYYY HH:mm:ss')} </dd></li>
+                                                    <li><i class="bi bi-rounded-right"></i> <dt>Modified on:</dt><dd>{ moment(detail.updated_at).utc().format('DD/MM/YYYY HH:mm:ss')} </dd></li>
                                                 
                                                 </ul>
                                                 }
@@ -247,7 +248,7 @@ const Tokens = () => {
                                                         </div>
 
                                                     <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                        <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 
                                                     </div>
                                             
@@ -260,7 +261,7 @@ const Tokens = () => {
                                     <div className="modal-dialog" role="document">
                                         <div className="modal-content">
                                         <div className="modal-header">
-                                            <h5 className="modal-title" id="exampleModalLabel">Historiques des transaction</h5>
+                                            <h5 className="modal-title" id="exampleModalLabel">Transaction history</h5>
                                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                             </button>
@@ -285,7 +286,7 @@ const Tokens = () => {
                                                     <div className="row d-flex align-items-center">
                                                         <div className="col-9">
                                                         <ul>
-                                                        <li><i class="bi bi-rounded-right"></i> <dt>Traitée le::</dt><dd>{tok.processed_at}</dd></li>
+                                                        <li><i class="bi bi-rounded-right"></i> <dt>Processed on:</dt><dd>{moment(tok.processed_at).utc().format('DD/MM/YYYY HH:mm:ss')}</dd></li>
                                                         <li><i class="bi bi-rounded-right"></i> <dt>Sender_wallet:</dt><dd>{ tok.sender_wallet }</dd></li>
                                                         <li><i class="bi bi-rounded-right"></i> <dt>Receiver_wallet:</dt><dd>{ tok.receiver_wallet }</dd></li>      
                                                       </ul>
@@ -308,7 +309,7 @@ const Tokens = () => {
                     </div>
 
                                                 <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                    <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             
                                                 </div>
                                         

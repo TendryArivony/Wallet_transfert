@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom"
 import { useState, useEffect } from 'react';
 import baseURI from '../../utilitaire/baseURI';
+import moment from "moment";  
 
 const TrustRelashionship = () => {
     const [trusts, setTrust] = useState(null);
@@ -199,8 +200,8 @@ const TrustRelashionship = () => {
                                                                             <th scope="row">{tru.type}</th>
                                                                             <td>{tru.request_type}</td>
                                                                             <td>{tru.state}</td>
-                                                                            <td>{tru.created_at}</td>
-                                                                            <td>{tru.updated_at}</td>
+                                                                            <td>{moment(tru.created_at).utc().format('DD/MM/YYYY HH:mm:ss')}</td>
+                                                                            <td>{moment(tru.updated_at).utc().format('DD/MM/YYYY HH:mm:ss')}</td>
                                                                             <td>{tru.originating_wallet}</td>
                                                                             <td>{tru.actor_wallet}</td>
                                                                             <td>{tru.target_wallet}</td>

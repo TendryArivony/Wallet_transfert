@@ -10,7 +10,7 @@ const Navigation = () => {
                         <div className="b-bg">
                             <i className="feather icon-trending-up"></i>
                         </div>
-                        <span className="b-title">Wallet Token Transfers</span>
+                        <span className="b-title">Token Transfers</span>
                     </a>
                     <a className="mobile-menu" id="mobile-collapse" href="javascript:"><span></span></a>
                 </div>
@@ -20,17 +20,17 @@ const Navigation = () => {
                             <label>Navigation</label>
                         </li>
                         <li>
-                            <Link to="../tokens"><span className="pcoded-micon"><i className="feather icon-home"></i></span><span className="pcoded-mtext">Liste des tokens dans ce wallet</span></Link>
+                            <Link to="../tokens"><span className="pcoded-micon"><i className="feather icon-home"></i></span><span className="pcoded-mtext">List of tokens in this wallet</span></Link>
                         </li>
                         <li data-username="form elements advance componant validation masking wizard picker select" className="nav-item">
-                            <Link to="../wallets"><span className="pcoded-micon"><i className="feather icon-alert-octagon"></i></span><span className="pcoded-mtext">Liste de tous les wallet gérés</span></Link>
+                            <Link to="../wallets"><span className="pcoded-micon"><i className="feather icon-alert-octagon"></i></span><span className="pcoded-mtext">List of all managed wallets</span></Link>
                         </li>
 
                         <li data-username="form elements advance componant validation masking wizard picker select" className="nav-item">
-                            <Link to="../transfers"><span className="pcoded-micon"><i className="feather icon-box"></i></span><span className="pcoded-mtext">Transférer des tokens entre les wallets</span></Link>
+                            <Link to="../transfers"><span className="pcoded-micon"><i className="feather icon-box"></i></span><span className="pcoded-mtext">Token transfer</span></Link>
                         </li>
                         <li data-username="form elements advance componant validation masking wizard picker select" className="nav-item">
-                            <Link to="../transfersList"><span className="pcoded-micon"><i className="feather icon-users"></i></span><span className="pcoded-mtext">Voir les transferts</span></Link>
+                            <Link to="../transfersList"><span className="pcoded-micon"><i className="feather icon-users"></i></span><span className="pcoded-mtext">See all transfers</span></Link>
                         </li>
                         <li data-username="form elements advance componant validation masking wizard picker select" className="nav-item">
                             <Link to="../relationship"><span className="pcoded-micon"><i className="feather icon-box"></i></span><span className="pcoded-mtext">Trust relationship</span></Link>
