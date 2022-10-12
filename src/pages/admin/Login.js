@@ -1,6 +1,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import baseURI from '../../utilitaire/baseURI';
+import { Button } from "rsuite";
+// Default CSS
+import "rsuite/dist/rsuite.min.css"; 
 
 const Login = () => {
 
@@ -30,9 +33,9 @@ const Login = () => {
             if (res.ok) return res.json();
             else {
                 console.log(res);
-                if (res.status === 401) throw Error('Verifiez vos informations !');
-                else if (res.status === 500) throw Error('Internal Serveur Error !');
-                else if (res.status === 400) throw Error('Verifiez vos informations !');
+                if (res.status === 404) throw Error('Wallet not found !');
+                else if (res.status === 500) throw Error('Internal Server Error !');
+                else if (res.status === 401) throw Error('Please check your information !');
             }
         }).then(data => {
             setIsLoading(false);
@@ -123,8 +126,8 @@ const Login = () => {
                             <p style={{ color: "red" }}>{formErrors.password}</p>
 
                             {!isLoading && <button className="btn btn-primary shadow-2 mb-4">Login</button>}
-                            {isLoading && <button className='btn btn-secondary' type='button' disabled=''><span className='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span></button>}
-
+                            {isLoading &&  <Button loading appearance="primary" 
+                               className="btn btn-primary shadow-2 mb-4">Loading Button 2</Button>}
                         </form>
                     </div>
                 </div>

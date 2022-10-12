@@ -89,7 +89,7 @@ const ListeTransfers = () => {
 
                       <div className="card-block table-border-style">
                         {error && <p> {error}</p>}
-                        {isPending && <p> Chargement ... </p>}
+                        {isPending && <p> Loading ... </p>}
                         <div className="table-responsive">
                           <table className="table">
                             <thead>
