@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from "react-router-dom"
 import { useState, useEffect } from 'react';
 import baseURI from '../../utilitaire/baseURI';
+import Pagination from '../../compoments/admin/Pagination';
+ 
 
 
 const ListeTransfers = () => {
@@ -10,18 +12,20 @@ const ListeTransfers = () => {
   const [error, setError] = useState(null);
   const token = JSON.parse(localStorage.getItem('tokens'));
   const [url, setUrl] = useState("/transfers");
+  const [itemOffset, setItemOffset] = useState(1);
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const stringify = (state) => {
-    if (state === true) {
+    if (state === true) { 
       return "Yes";
     } else {
       return "No";
     }
   }
-  useEffect(() => {
+  async function getbe(){
     const abortCont = new AbortController();
     setTimeout(() => {
-      fetch(baseURI(url + "?limit=10"),
+      fetch(baseURI(url + "?limit=10&&start="+itemOffset),
         {
           method: 'GET',
           headers: {
@@ -55,7 +59,33 @@ const ListeTransfers = () => {
 
     // abort the fetch
     return () => abortCont.abort();
+  }
+
+  useEffect(() => {
+    console.log(itemOffset);
+    getbe();
   }, [url])
+  useEffect(() => {
+    // Fetch items from another resources.
+    console.log(`Loading items from ${itemOffset} `);
+    setIsPending(true);
+    getbe();
+    // setCurrentItems(items.slice(itemOffset, endOffset));
+    // setPageCount(Math.ceil(items.length / itemsPerPage));
+    }, [itemOffset]);
+
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * 10);
+    console.log(
+      `User requested page number ${event.selected + 1}, which is offset ${newOffset+1}`
+    );
+    if(newOffset===0){
+        setItemOffset(1);
+    } else  setItemOffset(newOffset);
+   
+    setIsSubmit(true);
+  };
 
   return (
     <section className="pcoded-main-container">
@@ -90,6 +120,7 @@ const ListeTransfers = () => {
                       <div className="card-block table-border-style">
                         {error && <p> {error}</p>}
                         {isPending && <p> Loading ... </p>}
+                        { !isPending &&  
                         <div className="table-responsive">
                           <table className="table">
                             <thead>
@@ -125,7 +156,10 @@ const ListeTransfers = () => {
                             </tbody>
                           </table>
                         </div>
-                      </div>
+                          }
+                      </div> 
+                  
+                      <Pagination pages={10} change={handlePageClick}  ></Pagination>  
                     </div>
                   </div>
                 </div>

@@ -14,6 +14,13 @@ const Tokens = () => {
         const [error, setError] = useState(null); 
         const token = JSON.parse(localStorage.getItem('tokens'));
         const [url,setUrl] = useState("/tokens");
+        const [isSubmit, setIsSubmit] = useState(true);
+         // We start with an empty list of items.
+        const [currentItems, setCurrentItems] = useState(1);
+        const [pageCount, setPageCount] = useState(0);
+        // Here we use item offsets; we could also use page offsets
+        // following the API or data you're working with.
+        const [itemOffset, setItemOffset] = useState(1);
 
         const GetTransaction = (id) => {
     
@@ -27,7 +34,7 @@ const Tokens = () => {
         async function gettransaction(id){
             const abortCont = new AbortController();
             setTimeout(() => {
-                fetch(baseURI(url+"/"+id+"/transactions?limit=5"),
+                fetch(baseURI(url+"/"+id+"/transactions?limit=10"),
                     {
                         method: 'GET',
                         headers:{
@@ -101,13 +108,24 @@ const Tokens = () => {
                 // abort the fetch
                 return () => abortCont.abort();
         }
-
         
+        const handlePageClick = (event) => {
+            const newOffset = (event.selected * 100);
+            console.log(
+              `User requested page number ${event.selected + 1}, which is offset ${newOffset+1}`
+            );
+            if(newOffset===0){
+                setItemOffset(1);
+            } else  setItemOffset(newOffset);
+           
+            setIsSubmit(true);
+          };
 
-        useEffect(() => {
+
+        async function getbe(){
             const abortCont = new AbortController();
             setTimeout(() => {
-                fetch(baseURI(url+"?limit=10"),
+                fetch(baseURI(url+"?limit=100&&start="+itemOffset),
                     {
                         method: 'GET',
                         headers:{
@@ -128,6 +146,7 @@ const Tokens = () => {
                     console.log(data);
                     setToken(data.tokens);
                     setError(null);
+                    setIsSubmit(false);
                 })
                 .catch(err => {
                     if (err.name === 'AbortError') {
@@ -142,7 +161,26 @@ const Tokens = () => {
             
                 // abort the fetch
                 return () => abortCont.abort();
+        }
+
+        useEffect(() => {
+            console.log(isSubmit);
+            if(isSubmit){
+                getbe();
+            }
+            
             }, [url])
+
+        useEffect(() => {
+            // Fetch items from another resources.
+            console.log(`Loading items from ${itemOffset} `);
+            setIsPending(true);
+            getbe();
+            // setCurrentItems(items.slice(itemOffset, endOffset));
+            // setPageCount(Math.ceil(items.length / itemsPerPage));
+            }, [itemOffset]);
+            
+         
         
     return (
         <section className="pcoded-main-container">
@@ -155,11 +193,11 @@ const Tokens = () => {
                             <div className="row align-items-center">
                                 <div className="col-md-12">
                                     <div className="page-header-title">
-                                        <h5 className="m-b-10">Liste of tokens</h5>
+                                        <h5 className="m-b-10">List of tokens</h5>
                                     </div>
                                     <ul className="breadcrumb">
                                         <li className="breadcrumb-item"><Link to="/admin"><i className="feather icon-home"></i></Link></li>
-                                        <li className="breadcrumb-item"><a href="#!">Liste of tokens</a></li>
+                                        <li className="breadcrumb-item"><a href="#!">List of tokens</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -177,6 +215,7 @@ const Tokens = () => {
                                         <div className="card-block table-border-style">
                                             { error && <p> {error}</p> }
                                             { isPending && <p> Loading ... </p> }
+                                            { !isPending &&  
                                             <div className="table-responsive">
                                                 <table className="table">
                                                     <thead>
@@ -217,7 +256,9 @@ const Tokens = () => {
                                                     
                                                 </table>
                                             </div>
-                                            <Pagination pages={10} ></Pagination>
+                                            } 
+                                            <Pagination pages={10000} change={handlePageClick}  ></Pagination> 
+                                        
                                         </div>
                                     </div>
                                 </div>

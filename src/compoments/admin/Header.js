@@ -17,7 +17,7 @@ const Header = () => {
                 <div className="b-bg">
                     <i className="feather icon-trending-up"></i>
                 </div>
-                <span className="b-title">Administrateur</span>
+                <span className="b-title">Log out</span>
             </a>
         </div>
         <a className="mobile-menu" id="mobile-header" href="javascript:">
@@ -49,7 +49,7 @@ const Header = () => {
                         <div className="dropdown-menu dropdown-menu-right profile-notification">
                             <div className="pro-head">
                                 {/* <img src="assets/images/user/avatar-1.jpg" className="img-radius" alt="User-Profile-Image"> */}
-                                <span>Admin</span>
+                                <span>Log out</span>
                                 <Link to="#" className="dud-logout" title="Logout"  onClick={() => logout()}>
                                     <i className="feather icon-log-out"></i>
                                 </Link>

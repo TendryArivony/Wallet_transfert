@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom"
 import { useState, useEffect } from 'react';
 import baseURI from '../../utilitaire/baseURI';
-import ModifierType from '../ModifierType';
+import Pagination from '../../compoments/admin/Pagination';
 
 const Wallet = () => {
     const initialValue = { name: "" };
@@ -20,6 +20,8 @@ const Wallet = () => {
     const [modif, setModif] = useState(null);
 
     const [url, setUrl] = useState("/wallets?limit=10"); 
+    const [itemOffset, setItemOffset] = useState(1);
+
 
 
 
@@ -87,6 +89,17 @@ const Wallet = () => {
                 }
             })
     }
+    const handlePageClick = (event) => {
+        const newOffset = (event.selected * 10);
+        console.log(
+          `User requested page number ${event.selected + 1}, which is offset ${newOffset+1}`
+        );
+        if(newOffset===0){
+            setItemOffset(1);
+        } else  setItemOffset(newOffset);
+       
+        setIsSubmit(true);
+      };
 
     useEffect(() => {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
@@ -95,13 +108,10 @@ const Wallet = () => {
         }
     }, [formErrors])
 
-
-
-
-    useEffect(() => {
+    async function getbe(){
         const abortCont = new AbortController();
         setTimeout(() => {
-            fetch(baseURI(url),
+            fetch(baseURI(url+"&&start="+itemOffset),
                 {
                     method: 'GET',
                     headers: {
@@ -122,6 +132,7 @@ const Wallet = () => {
                     setIsPending(false);
                     setWallet(data.wallets);
                     setError(null);
+                    setIsPending(false);
                 })
                 .catch(err => {
                     if (err.name === 'AbortError') {
@@ -136,7 +147,24 @@ const Wallet = () => {
 
         // abort the fetch
         return () => abortCont.abort();
+    }
+
+    useEffect(() => {
+        getbe();
     }, [url])
+
+
+
+    useEffect(() => {
+        // Fetch items from another resources.
+        console.log(`Loading items from ${itemOffset} `);
+        setIsPending(true);
+        getbe();
+        // setCurrentItems(items.slice(itemOffset, endOffset));
+        // setPageCount(Math.ceil(items.length / itemsPerPage));
+        }, [itemOffset]);
+
+    
 
     return (
         <section className="pcoded-main-container">
@@ -204,6 +232,7 @@ const Wallet = () => {
                                                     </table>
                                                 </div>
                                             </div>
+                                            <Pagination pages={5} change={handlePageClick}  ></Pagination> 
                                         </div>
                                     </div>
                                     {/* <!-- [ basic-table ] end --> */}

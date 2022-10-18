@@ -3,6 +3,8 @@ import { Link } from "react-router-dom"
 import { useState, useEffect } from 'react';
 import baseURI from '../../utilitaire/baseURI';
 import moment from "moment";  
+import Pagination from '../../compoments/admin/Pagination';
+import { Button } from "rsuite"; 
 
 const TrustRelashionship = () => {
     const [trusts, setTrust] = useState(null);
@@ -11,15 +13,14 @@ const TrustRelashionship = () => {
     const [formErrors, setFormErrors] = useState({});
     const [isPending, setIsPending] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
-    const [isSubmit, setIsSubmit] = useState(false);
+    const [isSubmit, setIsSubmit] = useState(false); 
     const [error, setError] = useState(null);
     const token = JSON.parse(localStorage.getItem('tokens'));
     console.log(token);
-
     const [errorInsertion, setErrorInsertion] = useState(null);
     const [modif, setModif] = useState(null);
-
     const [url, setUrl] = useState("/trust_relationships?limit=10");
+    const [itemOffset, setItemOffset] = useState(1); 
 
 
     const handleChangerequest_type = (e) => {
@@ -46,6 +47,17 @@ const TrustRelashionship = () => {
         console.log(formValues);
       }
 
+      const handlePageClick = (event) => {
+        const newOffset = (event.selected * 10);
+        console.log(
+          `User requested page number ${event.selected + 1}, which is offset ${newOffset+1}`
+        );
+        if(newOffset===0){
+            setItemOffset(1);
+        } else  setItemOffset(newOffset);
+       
+        setIsSubmit(true);
+      };
 
     const verification = (values) => {
         const errors = {};
@@ -96,11 +108,10 @@ const TrustRelashionship = () => {
             }
         })
     }
-
-    useEffect(() => {
+    async function getbe(){
         const abortCont = new AbortController();
         setTimeout(() => {
-            fetch(baseURI(url),
+            fetch(baseURI(url+"&&start="+itemOffset),
                 {
                     method: 'GET',
                     headers: {
@@ -135,7 +146,28 @@ const TrustRelashionship = () => {
 
         // abort the fetch
         return () => abortCont.abort();
+    }
+
+    useEffect(() => {
+        getbe()
     }, [url])
+
+    useEffect(() => {
+        // Fetch items from another resources.
+        console.log(`Loading items from ${itemOffset} `);
+        setIsPending(true);
+        getbe();
+        // setCurrentItems(items.slice(itemOffset, endOffset));
+        // setPageCount(Math.ceil(items.length / itemsPerPage));
+        }, [itemOffset]);
+    
+        useEffect(() => {
+            if (Object.keys(formErrors).length === 0 && isLoading) {
+              insertion();
+            }
+          
+          }, [formErrors])
+    
 
     return (
         <section className="pcoded-main-container">
@@ -176,6 +208,7 @@ const TrustRelashionship = () => {
                                             <div className="card-block table-border-style">
                                                 {error && <p> {error}</p>}
                                                 {isPending && <p> Loading ... </p>}
+                                                { !isPending &&  
                                                 <div className="table-responsive">
                                                     <table className="table">
                                                         <thead>
@@ -213,6 +246,8 @@ const TrustRelashionship = () => {
 
                                                     </table>
                                                 </div>
+                                                }
+                                                <Pagination pages={10} change={handlePageClick}  ></Pagination>
                                             </div>
                                         </div>
                                     </div>
@@ -254,7 +289,9 @@ const TrustRelashionship = () => {
 
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Validate</button>
+                                    {!isLoading && <button type='submit' className="btn btn-primary">Validate</button>}
+                                     {isLoading && <Button loading appearance="primary" 
+                                    className="btn btn-primary shadow-2 mb-4">Loading Button 2</Button>}
                                 </div>
                             </form>
                         </div>
