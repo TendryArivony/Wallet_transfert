@@ -17,7 +17,7 @@ const Header = () => {
                 <div className="b-bg">
                     <i className="feather icon-trending-up"></i>
                 </div>
-                <span className="b-title">Administrateur</span>
+                <span className="b-title">Log out</span>
             </a>
         </div>
         <a className="mobile-menu" id="mobile-header" href="javascript:">
@@ -42,58 +42,6 @@ const Header = () => {
             </ul>
             <ul className="navbar-nav ml-auto">
                 <li>
-                    <div className="dropdown">
-                        <a className="dropdown-toggle" href="javascript:" data-toggle="dropdown"><i className="icon feather icon-bell"></i></a>
-                        <div className="dropdown-menu dropdown-menu-right notification">
-                            <div className="noti-head">
-                                <h6 className="d-inline-block m-b-0">Notifications</h6>
-                                <div className="float-right">
-                                    <a href="javascript:" className="m-r-10">mark as read</a>
-                                    <a href="javascript:">clear all</a>
-                                </div>
-                            </div>
-                            <ul className="noti-body">
-                                <li className="n-title">
-                                    <p className="m-b-0">NEW</p>
-                                </li>
-                                <li className="notification">
-                                    <div className="media">
-                                        {/* <img className="img-radius" src="assets/images/user/avatar-1.jpg" alt="Generic placeholder image"> */}
-                                        <div className="media-body">
-                                            <p><strong>John Doe</strong><span className="n-time text-muted"><i className="icon feather icon-clock m-r-10"></i>30 min</span></p>
-                                            <p>New ticket Added</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className="n-title">
-                                    <p className="m-b-0">EARLIER</p>
-                                </li>
-                                <li className="notification">
-                                    <div className="media">
-                                        {/* <img className="img-radius" src="assets/images/user/avatar-2.jpg" alt="Generic placeholder image"> */}
-                                        <div className="media-body">
-                                            <p><strong>Joseph William</strong><span className="n-time text-muted"><i className="icon feather icon-clock m-r-10"></i>30 min</span></p>
-                                            <p>Prchace New Theme and make payment</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className="notification">
-                                    <div className="media">
-                                        {/* <img className="img-radius" src="assets/images/user/avatar-3.jpg" alt="Generic placeholder image"> */}
-                                        <div className="media-body">
-                                            <p><strong>Sara Soudein</strong><span className="n-time text-muted"><i className="icon feather icon-clock m-r-10"></i>30 min</span></p>
-                                            <p>currently login</p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div className="noti-footer">
-                                <a href="javascript:">show all</a>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li>
                     <div className="dropdown drp-user">
                         <a href="javascript:" className="dropdown-toggle" data-toggle="dropdown">
                             <i className="icon feather icon-settings"></i>
@@ -101,7 +49,7 @@ const Header = () => {
                         <div className="dropdown-menu dropdown-menu-right profile-notification">
                             <div className="pro-head">
                                 {/* <img src="assets/images/user/avatar-1.jpg" className="img-radius" alt="User-Profile-Image"> */}
-                                <span>Admin</span>
+                                <span>Log out</span>
                                 <Link to="#" className="dud-logout" title="Logout"  onClick={() => logout()}>
                                     <i className="feather icon-log-out"></i>
                                 </Link>

@@ -2,6 +2,7 @@ import React from 'react';
 import Navigation from '../../compoments/admin/Navigation';
 import Header from '../../compoments/admin/Header';
 import ListeWallet from '../../compoments/admin/ListeWallet';
+import Footer from '../../compoments/admin/Footer';
 
 
 const Wallet= () => {
@@ -10,6 +11,7 @@ const Wallet= () => {
             <Navigation/>
             <Header/>
             <ListeWallet/> 
+            <Footer/>
         </div>
     );
 };
