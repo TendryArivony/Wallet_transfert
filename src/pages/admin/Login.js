@@ -35,7 +35,7 @@ const Login = () => {
                 console.log(res);
                 if (res.status === 404) throw Error('Wallet not found !');
                 else if (res.status === 500) throw Error('Internal Server Error !');
-                else if (res.status === 401) throw Error('Please check your information !');
+                else if (res.status === 401) throw Error('Please check your password !');
             }
         }).then(data => {
             setIsLoading(false);

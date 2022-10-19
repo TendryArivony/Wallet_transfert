@@ -1,5 +1,4 @@
 import { Navigate } from 'react-router-dom';
-import { checkLogin } from './../LoginVerify';
 
 function checkLog(){
     const token = JSON.parse(localStorage.getItem('tokens'));

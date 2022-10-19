@@ -4,9 +4,6 @@ import Navigation from '../../compoments/admin/Navigation';
 import Header from '../../compoments/admin/Header';
 import ListeToken from '../../compoments/admin/ListeToken';
 import Footer from '../../compoments/admin/Footer';
-import CustomRoutes from '../../compoments/customRoutes/CustomRoutes';
-
-
 
 const Tokens = () => {
     return (

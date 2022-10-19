@@ -16,9 +16,7 @@ const TrustRelashionship = () => {
     const [isSubmit, setIsSubmit] = useState(false); 
     const [error, setError] = useState(null);
     const token = JSON.parse(localStorage.getItem('tokens'));
-    console.log(token);
     const [errorInsertion, setErrorInsertion] = useState(null);
-    const [modif, setModif] = useState(null);
     const [url, setUrl] = useState("/trust_relationships?limit=10");
     const [itemOffset, setItemOffset] = useState(1); 
 
