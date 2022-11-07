@@ -3,9 +3,11 @@ import { Link } from "react-router-dom"
 import { useState, useEffect } from 'react';
 import baseURI from '../../utilitaire/baseURI';
 import Pagination from '../../compoments/admin/Pagination';
+import { Button } from "rsuite";
+import "rsuite/dist/rsuite.min.css";
 
 const Wallet = () => {
-    const initialValue = { name: "" };
+    const initialValue = { wallet: "" };
     const [formValues, setFormValues] = useState(initialValue);
     const [formErrors, setFormErrors] = useState({});
     const [wallets, setWallet] = useState(null);
@@ -14,11 +16,8 @@ const Wallet = () => {
     const [isSubmit, setIsSubmit] = useState(false);
     const [error, setError] = useState(null);
     const token = JSON.parse(localStorage.getItem('tokens'));
-    console.log(token);
-
     const [errorInsertion, setErrorInsertion] = useState(null);
     const [modif, setModif] = useState(null);
-
     const [url, setUrl] = useState("/wallets?limit=10"); 
     const [itemOffset, setItemOffset] = useState(1);
 
@@ -26,8 +25,9 @@ const Wallet = () => {
 
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormValues({ ...formValues, [name]: value });
+        const { wallet, value } = e.target;
+        console.log(value);
+        formValues['wallet'] = value;
         verification(formValues);
     }
 
@@ -39,9 +39,10 @@ const Wallet = () => {
     const verification = (values) => {
         const errors = {};
         console.log("verification");
+        console.log(values)
         // const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}#/i;
-        if (!values.name) {
-            errors.name = "Veuillez donner le nom du wallet";
+        if (!values.wallet) {
+            errors.wallet = "Veuillez donner le nom du wallet";
         }
         return errors;
     }
@@ -49,6 +50,7 @@ const Wallet = () => {
 
     const insertionWallet = (e) => {
         e.preventDefault();//empeche page de recharger
+        console.log("vopotsitra");
         setFormErrors(verification(formValues));
         setIsSubmit(true);
     }
@@ -103,7 +105,10 @@ const Wallet = () => {
 
     useEffect(() => {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
+            setIsLoading(true);
             insertion();
+            console.log("atoooooo pr");
+            console.log(formValues);
             setWallet(wallets, formValues)
         }
     }, [formErrors])
@@ -258,13 +263,15 @@ const Wallet = () => {
                             <form onSubmit={insertionWallet}>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Name:</label>
-                                    <input type="text" class="form-control" id="type-name" name="name" value={formValues.name} onChange={handleChange} />
+                                    <input type="text" class="form-control" id="type-name" name="wallet" value={formValues.name} onChange={handleChange} />
                                 </div>
                                 <p style={{ color: "red" }}>{formErrors.name}</p>
 
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Validate</button>
+        
+                                    {!isLoading && <button type='submit' className="btn btn-primary shadow-2 mb-4">Validate</button>}
+                            {isLoading && <Button loading appearance="primary" 
+                               className="btn btn-primary shadow-2 mb-4">Loading Button 2</Button>}
                                 </div>
                             </form>
                         </div>
